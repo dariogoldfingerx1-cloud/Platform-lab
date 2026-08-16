@@ -2,6 +2,10 @@ name: Terraform CI
 
 on: [pull_request]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
