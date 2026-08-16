@@ -1,3 +1,3 @@
-# Platform Lab
+## CI/CD Lab
 
-Hands-on project to learn Platform Engineering, Terraform, CI/CD and AWS.
+This project is used to practice Platform Engineering, Terraform and CI/CD.xxxxx
