@@ -3,12 +3,22 @@ version: 0.2
 phases:
   install:
     commands:
+      - echo "Installing Terraform..."
+      - TERRAFORM_VERSION=1.12.2
+      - curl -fsSLo terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      - unzip -o terraform.zip
+      - mv terraform /usr/local/bin/terraform
       - terraform version
 
   pre_build:
     commands:
+      - cd codepipeline/infra
       - terraform init
 
   build:
     commands:
+  build:
+    commands:
+      - cp tfplan codepipeline/infra/tfplan
+      - cd codepipeline/infra
       - terraform apply -auto-approve tfplan
