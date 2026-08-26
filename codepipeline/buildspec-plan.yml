@@ -17,7 +17,6 @@ phases:
 
   build:
     commands:
-      - cd codepipeline/infra
       - terraform plan -out=tfplan
 
 artifacts:

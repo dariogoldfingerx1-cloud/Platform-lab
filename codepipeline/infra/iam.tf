@@ -59,8 +59,8 @@ resource "aws_iam_role_policy" "codebuild" {
           "s3:GetObject",
           "s3:PutObject"
         ]
-        Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/terraform.tfstate"
-      },
+          Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/codepipeline.tfstate"
+       },
       {
         Effect = "Allow"
         Action = [
@@ -68,7 +68,7 @@ resource "aws_iam_role_policy" "codebuild" {
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/terraform.tfstate.tflock"
+        Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/codepipeline.tfstate.tflock"
       },
       {
         Effect = "Allow"

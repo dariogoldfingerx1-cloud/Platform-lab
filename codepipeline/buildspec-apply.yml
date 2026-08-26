@@ -17,8 +17,5 @@ phases:
 
   build:
     commands:
-  build:
-    commands:
-      - cp tfplan codepipeline/infra/tfplan
-      - cd codepipeline/infra
+      - cp ../tfplan tfplan
       - terraform apply -auto-approve tfplan
