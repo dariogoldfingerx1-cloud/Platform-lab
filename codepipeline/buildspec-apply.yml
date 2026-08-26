@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - terraform version
+
+  pre_build:
+    commands:
+      - terraform init
+
+  build:
+    commands:
+      - terraform apply -auto-approve tfplan
