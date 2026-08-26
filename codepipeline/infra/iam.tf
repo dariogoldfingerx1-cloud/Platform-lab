@@ -146,7 +146,7 @@ resource "aws_iam_role_policy" "codepipeline" {
         Action = [
           "codeconnections:UseConnection"
         ]
-        Resource = "arn:aws:codeconnections:us-east-1:126588786443:connection/2b751be4-29ea-48b2-82db-b01bd2b1c8b"
+        Resource = "arn:aws:codeconnections:us-east-1:126588786443:connection/2b751be4-29ea-48b2-82db-b01bd2b1c8b6"
       }
     ]
   })

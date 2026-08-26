@@ -37,7 +37,7 @@ resource "aws_codepipeline" "platform" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        ConnectionArn    = "arn:aws:codeconnections:us-east-1:126588786443:connection/2b751be4-29ea-48b2-82db-b01bd2b1c8b"
+        ConnectionArn    = "arn:aws:codeconnections:us-east-1:126588786443:connection/2b751be4-29ea-48b2-82db-b01bd2b1c8b6"
         FullRepositoryId = "dariogoldfingerx1-cloud/Platform-lab"
         BranchName       = "main"
       }
