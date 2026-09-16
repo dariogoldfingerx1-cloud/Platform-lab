@@ -17,5 +17,8 @@ phases:
 
   build:
     commands:
-      - cp ../tfplan tfplan
-      - terraform apply -auto-approve tfplan
+    - echo "Primary source: $CODEBUILD_SRC_DIR"
+    - echo "Plan artifact: $CODEBUILD_SRC_DIR_plan_output"
+    - ls -la "$CODEBUILD_SRC_DIR_plan_output"
+    - cp "$CODEBUILD_SRC_DIR_plan_output/tfplan" tfplan
+    - terraform apply -auto-approve tfplan
