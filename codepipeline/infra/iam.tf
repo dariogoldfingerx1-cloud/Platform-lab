@@ -24,6 +24,7 @@ resource "aws_iam_role_policy" "codebuild" {
     Version = "2012-10-17"
 
     Statement = [
+      # CloudWatch Logs
       {
         Effect = "Allow"
         Action = [
@@ -33,23 +34,15 @@ resource "aws_iam_role_policy" "codebuild" {
         ]
         Resource = "*"
       },
+
+      # Terraform state
       {
         Effect = "Allow"
         Action = [
-          "s3:GetObject",
-          "s3:GetObjectVersion",
-          "s3:PutObject",
-          "s3:GetBucketVersioning"
-        ]
-        Resource = [
-          aws_s3_bucket.artifacts.arn,
-          "${aws_s3_bucket.artifacts.arn}/*"
-        ]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "s3:ListBucket"
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:GetBucketVersioning",
+          "s3:GetEncryptionConfiguration"
         ]
         Resource = "arn:aws:s3:::platform-lab-tfstate-007"
       },
@@ -57,53 +50,116 @@ resource "aws_iam_role_policy" "codebuild" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject"
+          "s3:GetObjectVersion",
+          "s3:PutObject",
+          "s3:DeleteObject"
         ]
-          Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/codepipeline.tfstate"
-       },
+        Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/codepipeline.tfstate*"
+      },
+
+      # CodePipeline artifact bucket
       {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
+          "s3:GetObjectVersion",
           "s3:PutObject",
           "s3:DeleteObject"
         ]
-        Resource = "arn:aws:s3:::platform-lab-tfstate-007/platform-lab/codepipeline.tfstate.tflock"
+        Resource = "${aws_s3_bucket.artifacts.arn}/*"
       },
       {
         Effect = "Allow"
         Action = [
-          "lambda:CreateFunction",
-          "lambda:UpdateFunctionCode",
-          "lambda:UpdateFunctionConfiguration",
-          "lambda:GetFunction",
-          "lambda:GetFunctionConfiguration",
-          "lambda:DeleteFunction",
-          "lambda:ListVersionsByFunction",
-          "lambda:GetFunctionCodeSigningConfig"
+          "s3:GetBucketLocation",
+          "s3:GetBucketVersioning",
+          "s3:GetEncryptionConfiguration",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketAcl",
+          "s3:GetBucketCORS",
+          "s3:GetBucketWebsite",
+          "s3:ListBucket",
+          "s3:GetAccelerateConfiguration"
         ]
-        Resource = "arn:aws:lambda:us-east-1:126588786443:function:platform-lab-dev"
+        Resource = aws_s3_bucket.artifacts.arn
       },
+
+      # Manage the artifact S3 bucket
       {
         Effect = "Allow"
         Action = [
-          "iam:CreateRole",
+          "s3:CreateBucket",
+          "s3:DeleteBucket",
+          "s3:PutBucketVersioning",
+          "s3:PutEncryptionConfiguration",
+          "s3:GetBucketVersioning",
+          "s3:GetEncryptionConfiguration",
+          "s3:GetBucketLocation",
+          "s3:ListBucket"
+        ]
+        Resource = aws_s3_bucket.artifacts.arn
+      },
+
+      # Read/manage CodeBuild projects
+      {
+        Effect = "Allow"
+        Action = [
+          "codebuild:BatchGetProjects",
+          "codebuild:CreateProject",
+          "codebuild:UpdateProject",
+          "codebuild:DeleteProject"
+        ]
+        Resource = [
+          aws_codebuild_project.terraform_plan.arn,
+          aws_codebuild_project.terraform_apply.arn
+        ]
+      },
+
+      # Manage CodePipeline
+      {
+        Effect = "Allow"
+        Action = [
+          "codepipeline:GetPipeline",
+          "codepipeline:GetPipelineState",
+          "codepipeline:GetPipelineExecution",
+          "codepipeline:ListPipelineExecutions",
+          "codepipeline:CreatePipeline",
+          "codepipeline:UpdatePipeline",
+          "codepipeline:DeletePipeline"
+        ]
+        Resource = aws_codepipeline.platform.arn
+      },
+
+      # IAM roles used by this infrastructure
+      {
+        Effect = "Allow"
+        Action = [
           "iam:GetRole",
+          "iam:CreateRole",
           "iam:DeleteRole",
+          "iam:ListRolePolicies",
+          "iam:GetRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:ListAttachedRolePolicies",
           "iam:AttachRolePolicy",
           "iam:DetachRolePolicy",
-          "iam:ListRolePolicies",
-          "iam:ListAttachedRolePolicies",
-          "iam:ListInstanceProfilesForRole"
+          "iam:PassRole"
         ]
-        Resource = "arn:aws:iam::126588786443:role/platform-lab-dev-role"
+        Resource = [
+          aws_iam_role.codebuild.arn,
+          aws_iam_role.codepipeline.arn,
+          "arn:aws:iam::126588786443:role/platform-lab-dev-role"
+        ]
       },
+
+      # GitHub connection
       {
         Effect = "Allow"
         Action = [
-          "iam:PassRole"
+          "codeconnections:UseConnection"
         ]
-        Resource = "arn:aws:iam::126588786443:role/platform-lab-dev-role"
+        Resource = "arn:aws:codeconnections:us-east-1:126588786443:connection/2b751be4-29ea-48b2-82db-b01bd2b1c8b6"
       }
     ]
   })
