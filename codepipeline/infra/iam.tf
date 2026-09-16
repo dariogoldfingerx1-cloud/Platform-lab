@@ -71,15 +71,7 @@ resource "aws_iam_role_policy" "codebuild" {
       {
         Effect = "Allow"
         Action = [
-          "s3:GetBucketLocation",
-          "s3:GetBucketVersioning",
-          "s3:GetEncryptionConfiguration",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketAcl",
-          "s3:GetBucketCORS",
-          "s3:GetBucketWebsite",
-          "s3:ListBucket",
-          "s3:GetAccelerateConfiguration"
+          "s3:*"
         ]
         Resource = aws_s3_bucket.artifacts.arn
       },
