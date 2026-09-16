@@ -111,13 +111,7 @@ resource "aws_iam_role_policy" "codebuild" {
       {
         Effect = "Allow"
         Action = [
-          "codepipeline:GetPipeline",
-          "codepipeline:GetPipelineState",
-          "codepipeline:GetPipelineExecution",
-          "codepipeline:ListPipelineExecutions",
-          "codepipeline:CreatePipeline",
-          "codepipeline:UpdatePipeline",
-          "codepipeline:DeletePipeline"
+          "codepipeline:*"
         ]
         Resource = aws_codepipeline.platform.arn
       },
