@@ -86,7 +86,8 @@ resource "aws_codepipeline" "platform" {
       input_artifacts = ["source_output", "plan_output"]
 
       configuration = {
-        ProjectName = aws_codebuild_project.terraform_apply.name
+        ProjectName   = aws_codebuild_project.terraform_apply.name
+        PrimarySource = "source_output"
       }
     }
   }
