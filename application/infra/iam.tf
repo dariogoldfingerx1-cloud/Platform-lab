@@ -86,6 +86,7 @@ resource "aws_iam_role_policy" "codebuild" {
           "lambda:UpdateFunctionConfiguration",
           "lambda:GetFunction",
           "lambda:DeleteFunction",
+          "lambda:ListVersionsByFunction",
           "lambda:TagResource",
           "lambda:UntagResource"
         ]
