@@ -88,6 +88,7 @@ resource "aws_iam_role_policy" "codebuild" {
           "lambda:DeleteFunction",
           "lambda:ListVersionsByFunction",
           "lambda:TagResource",
+          "lambda:GetFunctionCodeSigningConfig",
           "lambda:UntagResource"
         ]
         Resource = "arn:aws:lambda:us-east-1:126588786443:function:platform-lab-dev"
